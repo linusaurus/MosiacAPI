@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -25,10 +27,15 @@ namespace MosiacAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddDbContext<MosiacAPI.EFcode.PurchaseSQLDBContext>(options =>
+                                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        [Obsolete]
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
@@ -39,9 +46,19 @@ namespace MosiacAPI
             {
                 app.UseHsts();
             }
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
 
-            app.UseHttpsRedirection();
-            app.UseMvc();
+            app.UseAuthentication();
+
+            app.UseRouting();
+            app.UseEndpoints(builder => builder.MapControllers());
+
+            // Removed for 3.1
+            //app.UseHttpsRedirection();
+            //app.UseMvc();
         }
     }
 }
