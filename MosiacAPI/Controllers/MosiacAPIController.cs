@@ -32,6 +32,7 @@ namespace MosiacAPI.Controllers
 
 
         [HttpGet]
+        [Route("api/part")]
         public ActionResult<List<PartDto>> GetAll()
         {
             PartService partService = new PartService(_context);

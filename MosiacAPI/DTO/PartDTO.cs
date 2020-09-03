@@ -11,9 +11,10 @@ namespace MosiacAPI.DTO
     {
         public int PartID { get; set; }
         public string Description { get; set; }
-      
+        public decimal? Cost { get; set; }
         public string PartNumber { get; set; }
         public string Location { get; set; }
         public string SKU { get; set; }
+        public decimal? StockOnHand { get; set; }
     }
 }

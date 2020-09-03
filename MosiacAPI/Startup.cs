@@ -51,14 +51,12 @@ namespace MosiacAPI
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
 
-            app.UseAuthentication();
+            //app.UseAuthentication();
 
             app.UseRouting();
             app.UseEndpoints(builder => builder.MapControllers());
 
-            // Removed for 3.1
-            //app.UseHttpsRedirection();
-            //app.UseMvc();
+       
         }
     }
 }

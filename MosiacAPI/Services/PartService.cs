@@ -28,8 +28,9 @@ namespace MosiacAPI.Services
                 Description = p.ItemDescription,
                 PartNumber = p.ItemName,
                 Location = p.Location,
-                SKU = p.SKU
-            });
+                SKU = p.SKU  
+
+            }) ;
 
             return   PartIQ.ToList();
          }
@@ -43,11 +44,31 @@ namespace MosiacAPI.Services
                 PartID = p.PartID,
                 Description = p.ItemDescription,
                 PartNumber = p.ItemName,
+                Cost = p.Cost,
                 Location = p.Location,
-                SKU = p.SKU
-            });
+                SKU = p.SKU,
+                StockOnHand = _context.Inventory.Where(l => l.PartID == p.PartID).Sum(s => s.Qnty)
+        });
 
             return PartIQ.FirstOrDefault();
+        }
+
+        public void UpdateStock(int id,decimal level)
+        {
+
+
+           
+
+            
+        }
+
+        public void PushStock(int id, decimal amount)
+        {
+
+
+
+
+
         }
     }
 }
